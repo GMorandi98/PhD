@@ -1,0 +1,21 @@
+##############################
+### Global parameters file ###
+##############################
+{
+    "Lattice" :             (32, 32, 32, 64), 
+    "beta" :                6.17,
+    "tau" :                 2.0,
+    "Ns"  :                 8,
+    "Ntherm" :              200,            # at least 200 
+    "therm_step" :          10,             # must be a divisor of Ntherm
+    "Ntraj" :               200,
+    "MC_measure_step" :     10,           # must be a divisor of Ntraj
+    "WF_evolutions"   :     300,
+    "WF_measure_step" :     5, 
+    "eps_WF" :              0.02,         # hence t_max = WF_evolutions * eps_WF
+    "seed" :                "178928",
+    "init_cnfg" :           "Cnfgs_checkpts/checkpt_MDU20_142536_label-25.U",   # None,
+    "data_file" :           "../../Data_Analysis/Pure_gauge/Cnfgs_measurement/WF-slices_beta617_seed123456.dat",
+    "tag_name" :            26,            # this tag must be the label in "init_config" +1. 
+    "close_data_file" :     False,
+}  
