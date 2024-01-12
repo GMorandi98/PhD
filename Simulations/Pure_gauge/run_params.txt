@@ -13,9 +13,9 @@
     "WF_evolutions"   :     300,
     "WF_measure_step" :     5, 
     "eps_WF" :              0.02,         # hence t_max = WF_evolutions * eps_WF
-    "seed" :                "198237",
-    "init_cnfg" :           "Cnfgs_checkpts/checkpt_MDU20_178928_label-26.U",   # None,
+    "seed" :                "582645",
+    "init_cnfg" :           "Cnfgs_checkpts/checkpt_MDU20_198237_label-27.U",   # None,
     "data_file" :           "../../Data_Analysis/Pure_gauge/Cnfgs_measurement/WF-slices_beta617_seed123456.dat",
-    "tag_name" :            27,            # this tag must be the label in "init_config" +1. 
+    "tag_name" :            28,            # this tag must be the label in "init_config" +1. 
     "close_data_file" :     False,
 }  
