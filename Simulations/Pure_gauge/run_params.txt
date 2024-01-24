@@ -8,14 +8,14 @@
     "Ns"  :                 8,
     "Ntherm" :              200,            # at least 200 
     "therm_step" :          10,             # must be a divisor of Ntherm
-    "Ntraj" :               200,
+    "Ntraj" :               200,            # 400
     "MC_measure_step" :     10,           # must be a divisor of Ntraj
     "WF_evolutions"   :     300,
     "WF_measure_step" :     5, 
     "eps_WF" :              0.02,         # hence t_max = WF_evolutions * eps_WF
-    "seed" :                "996637",
-    "init_cnfg" :           "Cnfgs_checkpts/checkpt_MDU20_144554_label-38.U",   # None,
+    "seed" :                "347582",
+    "init_cnfg" :           "Cnfgs_checkpts/checkpt_MDU20_886412_label-48.U",   # None,
     "data_file" :           "../../Data_Analysis/Pure_gauge/Cnfgs_measurement/WF-slices_beta617_seed123456.dat",
-    "tag_name" :            39,            # this tag must be the label in "init_config" +1. 
+    "tag_name" :            49,            # this tag must be the label in "init_config" +1. 
     "close_data_file" :     False,
 }  
