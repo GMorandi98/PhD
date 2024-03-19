@@ -316,6 +316,11 @@ else:
     g.message()
     g.save(f"Cnfgs_checkpts/checkpt_MDU{Ntraj // MC_step}_{seed}_label-{tag}.U", U, g.format.nersc())
     g.message()
+    g.message()
+    if g.rank() == 0:
+        os.remove(f"{params['init_cnfg']}")
+        g.message(f"Previous configuration '{params['init_cnfg']}' has been deleted.")
+    g.message()
 ##############################################################################
 
 
