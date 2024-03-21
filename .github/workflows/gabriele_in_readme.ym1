@@ -2,8 +2,8 @@ name: Commit if Name in README
 
 on:
   push:
-    branches:
-      - main
+    paths:
+	- '**/*.md'
 
 jobs:
   check-readme:
@@ -22,12 +22,3 @@ jobs:
           echo "Name not found in README.md"
           exit 1
         fi
-
-    - name: Commit changes
-      if: success()
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add README.md
-        git commit -m "Auto-commit: README.md contains name"
-        git push
