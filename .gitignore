@@ -54,3 +54,9 @@ __pycache__/
 # Pyobs observables #
 #####################
 *.pyobs
+
+##################
+# Specific files #
+##################
+Bounding_Method.py
+test_Bounding.ipynb
