@@ -1,0 +1,24 @@
+name: Commit if Name in README
+
+on:
+  push:
+    paths:
+	- '**/*.md'
+
+jobs:
+  check-readme:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Check if name exists in README
+      run: |
+        name="Gabriele"
+        if grep -q "$name" README.md; then
+          echo "Name found in README.md"
+        else
+          echo "Name not found in README.md"
+          exit 1
+        fi
