@@ -1,9 +1,9 @@
-name: Commit if Name in README
+name: Commit if 'Gabriele' in README
 
 on:
   push:
-    paths:
-	- '**/*.md'
+    branches:
+      - main
 
 jobs:
   check-readme:
