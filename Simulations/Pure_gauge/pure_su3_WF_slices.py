@@ -121,7 +121,7 @@ if (params["init_cnfg"] is None) and (run == 0):
             timer("trajectory")
             h    += [HMC(U, tau, pi)]
             plaq += [g.qcd.gauge.plaquette(U)]
-            g.message(f"     ---- Trajectory {i * (Ntherm // therm_step) + j + 1},  Acc/Rej = {h[-1][0]},  dH = {h[-1][1]:.4f},  Plaq = {plaq[-1]:.5f}, ----  ")
+            g.message(f"     ---- Trajectory {i * (Ntherm // therm_step) + j + 1},  Acc/Rej = {h[-1][0]},  dH = {h[-1][1]},  Plaq = {plaq[-1]}, ----  ")
             g.message()
         timer()
         h    = np.array(h) 
@@ -168,7 +168,7 @@ else:
                 timer("trajectory")
                 h    += [HMC(U, tau, pi)]
                 plaq += [g.qcd.gauge.plaquette(U)]
-                g.message(f"     ---- Trajectory {i * (Ntherm // therm_step) + j + 1},  Acc/Rej = {h[-1][0]},  dH = {h[-1][1]:.4f},  Plaq = {plaq[-1]:.5f} ----  ")
+                g.message(f"     ---- Trajectory {i * (Ntherm // therm_step) + j + 1},  Acc/Rej = {h[-1][0]},  dH = {h[-1][1]},  Plaq = {plaq[-1]}, ----  ")
                 g.message()
             timer()
             h    = np.array(h) 
