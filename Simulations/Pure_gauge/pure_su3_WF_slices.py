@@ -31,8 +31,8 @@ MC_step    = params["MC_measure_step"]
 WF_evol    = params["WF_evolutions"]
 WF_step    = params["WF_measure_step"]
 eps_WF     = params["eps_WF"]
-seed       = params["seed"]
 run        = params["run"]
+seed       = f"run{run}"
 
 
 grid = g.grid([L1, L2, L3, T], g.double)
@@ -127,7 +127,7 @@ if (params["init_cnfg"] is None) and (run == 0):
         h    = np.array(h) 
         plaq = np.array(plaq)
         g.message(f" |-|-|-|-| {(i+1)*(Ntherm//therm_step)/Ntherm*100:.0f}% of Thermalization completed |-|-|-|-|  ")
-        g.message(f"       < Plaq > = {np.mean(plaq):.4f},  Acceptance = {np.mean(h[:, 0])*100:.0f}%,  < |dH| > = {np.mean(np.abs(h[:, 1])):.3e}  ")
+        g.message(f"       < Plaq > = {np.mean(plaq):.4f},  Acceptance = {np.mean(h[:, 0])*100:.0f}%,  <|dH|> = {np.mean(np.abs(h[:, 1])):.3e},  ")
         g.message(timer)
         g.message()
     
@@ -174,7 +174,7 @@ else:
             h    = np.array(h) 
             plaq = np.array(plaq)
             g.message(f" |-|-|-|-| {(i+1)*(Ntherm//therm_step)/Ntherm*100:.0f}% of Thermalization completed |-|-|-|-|  ")
-            g.message(f"       < Plaq > = {np.mean(plaq):.4f},  Acceptance = {np.mean(h[:, 0])*100:.0f}%,  < |dH| > = {np.mean(np.abs(h[:, 1])):.3e}  ")
+            g.message(f"       < Plaq > = {np.mean(plaq):.4f},  Acceptance = {np.mean(h[:, 0])*100:.0f}%,  <|dH|> = {np.mean(np.abs(h[:, 1])):.3e},  ")
             g.message(timer)
             g.message()
         
@@ -195,7 +195,7 @@ else:
         # existing one in params["data_file"]. In the former case the loaded config. 
         # is after thermalization, instead in the latter one, the configuration
         # is the last saved after a given evoution of Ntraj trajectories. 
-        if (params["data_file"] is None) and (run == 0):
+        if (params["data_file"] is None) and (run == 1):
             # create new file:
             g.message()
             if g.rank() == 0:
@@ -204,7 +204,6 @@ else:
                 file.write('Lattice', (L1, L2, L3, T))
                 file.write('Number of steps of OMF4 integrator', Ns)
                 file.write('Length of each MD trajectory', tau)
-                file.write('MD trajectories', Ntraj)
                 file.write('MC measure step', MC_step)
                 file.write('epsilon WF', eps_WF)
                 file.write('WF evolutions from t = 0', WF_evol)
@@ -278,8 +277,7 @@ else:
         obs = {
                 'E_Clov'            :       np.zeros((N_WF, T)), \
                 'Plaquette'         :       np.zeros((N_WF, T)), \
-                'Q'                 :       np.zeros((N_WF, T)),
-                #'Q_5LI'             :       np.zeros((N_WF, T)),       
+                'Q'                 :       np.zeros((N_WF, T))       
             }
 
 
@@ -306,8 +304,6 @@ else:
                 g.message(f"            --   Plaq    =  {np.sum(obs['Plaquette'][0]) / vol},")
                 obs['Q'][0]         = np.array(g.slice(g.qcd.gauge.topological_charge(U,     field=True), 3)).real
                 g.message(f"            --   Q       =  {np.sum(obs['Q'][0]) / vol},")
-                # obs['Q_5LI'][0]     = np.array(g.slice(g.qcd.gauge.topological_charge_5LI(U, field=True), 3)).real 
-                # g.message(f"            --   Q_5LI   =  {np.sum(obs['Q_5LI'][0]) / vol}")
                 g.message()
                 ######################
 
@@ -327,8 +323,6 @@ else:
                         g.message(f"            --   Plaq    =  {np.sum(obs['Plaquette'][n // WF_step]) / vol},")
                         obs['Q'][n // WF_step]         = np.array(g.slice(g.qcd.gauge.topological_charge(V,     field=True), 3)).real
                         g.message(f"            --   Q       =  {np.sum(obs['Q'][n // WF_step]) / vol},")
-                        # obs['Q_5LI'][n // WF_step]     = np.array(g.slice(g.qcd.gauge.topological_charge_5LI(V, field=True), 3)).real
-                        # g.message(f"            --   Q_5LI   =  {np.sum(obs['Q_5LI'][n // WF_step]) / vol}")
                         g.message()
                         ###################### 
                 timer()
