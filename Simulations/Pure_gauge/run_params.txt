@@ -13,9 +13,9 @@
     "WF_evolutions"   :     300,
     "WF_measure_step" :     5, 
     "eps_WF" :              0.02,         # hence t_max = WF_evolutions * eps_WF
-    "init_cnfg" :           "Cnfgs_checkpts/ckpoint_beta617_lat32x256.0",
+    "init_cnfg" :           "Cnfgs_checkpts/ckpoint_beta617_lat32x256.3",
     "thermalization" :      False, 
-    "data_file" :           None,         # "../../Data_Analysis/Pure_gauge/Cnfgs_measurement/WF-slices_beta617_seed123456.dat",
-    "run" :                 1,            # this tag must be the label in "init_config" +1. 
+    "data_file" :           "../../Data_Analysis/Pure_gauge/Cnfgs_measurement/WF-slices_beta617_lat32x256.dat",
+    "run" :                 4,            # this tag must be the label in "init_config" +1. 
     "close_data_file" :     False,
 }  

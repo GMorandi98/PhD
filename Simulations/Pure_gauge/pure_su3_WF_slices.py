@@ -48,6 +48,7 @@ pi = g.group.cartesian(U)
 #########################################
 ### General informations for Log file ###
 #########################################
+g.message()
 g.message(f"  Lattice  =  {grid.fdimensions}")
 vol = grid.fsites
 
@@ -202,6 +203,7 @@ else:
                 file = bison.FILE(f"../../Data_Analysis/Pure_gauge/Cnfgs_measurement/WF-slices_beta{int(beta*1e2)}_lat{L1}x{T}.dat", mode="w")
                 file.write('beta coupling', beta)
                 file.write('Lattice', (L1, L2, L3, T))
+                file.write("MD trajectories", Ntraj)
                 file.write('Number of steps of OMF4 integrator', Ns)
                 file.write('Length of each MD trajectory', tau)
                 file.write('MC measure step', MC_step)
@@ -288,41 +290,34 @@ else:
             timer()
             history['Acc/Rej'][i-1] = int(h[0])
             history['dH'][i-1]      = h[1]
-            g.message(f"  ------ MD trajectory {i}  ------  ")
-            g.message(f"         Acc/Rej = {h[0]},  dH = {h[1]:.3e},  ")
+            g.message(f" ------ MD trajectory {i}  ------  ")
+            g.message(f"        Acc/Rej = {h[0]},  dH = {h[1]:.3e},  ")
             g.message(timer)
             g.message()
             if (i % MC_step == 0):
                 timer("WF & measurement")
-                g.message(f"      ---- | Measurement at MC time {i} | ----")
+                g.message(f"    ---- | Measurement at MC time {i} | ----")
                 g.message()
-                g.message(f"            -- | Measurement at flow time t = 0.00 | --")
                 ##### Measurement #####
-                obs['E_Clov'][0]    = np.array(g.slice(g.qcd.gauge.energy_density(U,         field=True), 3)).real
-                g.message(f"            --   E_Clov  =  {np.sum(obs['E_Clov'][0]) / vol},")
+                obs['E_Clov'][0]    = np.array(g.slice(g.qcd.gauge.energy_density(U, field=True), 3)).real
                 obs['Plaquette'][0] = plaquette_slice(U, 3)
-                g.message(f"            --   Plaq    =  {np.sum(obs['Plaquette'][0]) / vol},")
-                obs['Q'][0]         = np.array(g.slice(g.qcd.gauge.topological_charge(U,     field=True), 3)).real
-                g.message(f"            --   Q       =  {np.sum(obs['Q'][0]) / vol},")
+                obs['Q'][0]         = np.array(g.slice(g.qcd.gauge.topological_charge(U, field=True), 3)).real
+                g.message(f"        -- |  tWF = 0.00,  :  E_Clov = {np.sum(obs['E_Clov'][0]) / vol},  Plaq = {np.sum(obs['Plaquette'][0]) / vol},  Q = {np.sum(obs['Q'][0]) / vol},  | --")
                 g.message()
                 ######################
 
                 V = U.copy()
                 ### Wilson flow ###
                 for n in range(1, WF_evol+1): # WF evolves V, which is a copy of U 
-                    g.message(f"         -- WF evolution with eps = {eps_WF} --")
+                    g.message(f"       -- WF evolution with eps = {eps_WF} --")
                     V = g.qcd.gauge.smear.wilson_flow(V, epsilon=eps_WF)
                     if (n % WF_step == 0):
-                        # measurement at given flow time: t = n * eps_WF
                         g.message()
-                        g.message(f"            -- | Measurement at flow time t = {n * eps_WF:.2f} | --")
-                        ##### Measurement #####
-                        obs['E_Clov'][n // WF_step]    = np.array(g.slice(g.qcd.gauge.energy_density(V,         field=True), 3)).real
-                        g.message(f"            --   E_Clov  =  {np.sum(obs['E_Clov'][n // WF_step]) / vol},")
+                        ##### Measurement at given flow time: t = n * eps_WF #####
+                        obs['E_Clov'][n // WF_step]    = np.array(g.slice(g.qcd.gauge.energy_density(V, field=True), 3)).real
                         obs['Plaquette'][n // WF_step] = plaquette_slice(V, 3)
-                        g.message(f"            --   Plaq    =  {np.sum(obs['Plaquette'][n // WF_step]) / vol},")
-                        obs['Q'][n // WF_step]         = np.array(g.slice(g.qcd.gauge.topological_charge(V,     field=True), 3)).real
-                        g.message(f"            --   Q       =  {np.sum(obs['Q'][n // WF_step]) / vol},")
+                        obs['Q'][n // WF_step]         = np.array(g.slice(g.qcd.gauge.topological_charge(V, field=True), 3)).real
+                        g.message(f"        -- |  tWF = {n * eps_WF:.2f},  :  E_Clov = {np.sum(obs['E_Clov'][n // WF_step]) / vol},  Plaq = {np.sum(obs['Plaquette'][n // WF_step]) / vol},  Q = {np.sum(obs['Q'][n // WF_step]) / vol},  | --")
                         g.message()
                         ###################### 
                 timer()
@@ -331,7 +326,8 @@ else:
 
                 g.message()
                 if g.rank() == 0:
-                    file.write(f"Configuration {run * Nconf + i // MC_step}", obs)
+                    # file.write(f"Configuration {run * Nconf + i // MC_step}", obs) # TYPO: assumes start from run=0, but first run of meas. is run=1. Don't care about label. 
+                    file.write(f"Configuration {(run-1) * Nconf + i // MC_step}", obs)
                 g.message()
 
         timer()
